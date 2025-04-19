@@ -1,8 +1,20 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-# Using URL encoding for special characters in password
-Sqlalchemy_Database_url = 'postgresql://postgres:Visu%402006@localhost/app'
-engine = create_engine(Sqlalchemy_Database_url)
-SessionLocal = sessionmaker(autocommit = False,autoflush=False,bind=engine)
+from sqlalchemy.orm import sessionmaker
+
+DATABASE_URL = 'Your Passcode'
+
+engine = create_engine(DATABASE_URL)
+
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+# Create base class for declarative models
 Base = declarative_base()
+
+# Database dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
